@@ -1,0 +1,64 @@
+// Import the function to be tested
+import { retrievePaymentSubTypes } from './yourPaymentUtils'; // Update with the correct path
+
+// Mocked data for testing
+const mockEntitledPaymentMethods = {
+  entitledPaymentTypes: [
+    {
+      paymentMethod: 'CREDIT_CARD',
+      subPaymentMethods: ['VISA', 'MASTERCARD'],
+    },
+    {
+      paymentMethod: 'WALLET',
+      subPaymentMethods: ['PAYPAL', 'APPLE_PAY'],
+    },
+  ],
+};
+
+const mockFeatureFlagConfig = {
+  paymentSubTypes: {
+    CREDIT_CARD: {
+      VISA: true,
+      MASTERCARD: false,
+    },
+    WALLET: {
+      PAYPAL: true,
+      APPLE_PAY: true,
+    },
+  },
+};
+
+// Test suite for retrievePaymentSubTypes function
+describe('retrievePaymentSubTypes', () => {
+  it('returns an array of payment subtypes based on the payment method and feature flags', () => {
+    // Mock input parameters
+    const paymentMethod = 'CREDIT_CARD';
+
+    // Mock global variables or context data
+    const entitledPaymentMethods = mockEntitledPaymentMethods;
+    const featureFlagConfig = mockFeatureFlagConfig;
+
+    // Call the function
+    const result = retrievePaymentSubTypes(paymentMethod, entitledPaymentMethods, featureFlagConfig);
+
+    // Assert the expected result
+    expect(result).toEqual(['VISA']);
+  });
+
+  it('returns an empty array when no subtypes are available for the given payment method', () => {
+    // Mock input parameters
+    const paymentMethod = 'UNKNOWN_METHOD';
+
+    // Mock global variables or context data
+    const entitledPaymentMethods = mockEntitledPaymentMethods;
+    const featureFlagConfig = mockFeatureFlagConfig;
+
+    // Call the function
+    const result = retrievePaymentSubTypes(paymentMethod, entitledPaymentMethods, featureFlagConfig);
+
+    // Assert the expected result
+    expect(result).toEqual([]);
+  });
+
+  // Add more test cases to cover different scenarios
+});

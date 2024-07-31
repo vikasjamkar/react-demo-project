@@ -1,0 +1,68 @@
+// Import the function you want to test
+import { retrievePaymentSubTypes } from './yourUtils'; // Replace with the actual path to your utility function
+
+// Mock data for testing
+const mockEntitledPaymentMethods = {
+  entitledPaymentTypes: [
+    {
+      paymentMethod: 'CARD',
+      subPaymentMethods: ['VISA', 'MASTERCARD', 'AMEX'],
+    },
+    {
+      paymentMethod: 'CASH',
+      subPaymentMethods: ['CASH_ON_DELIVERY'],
+    },
+  ],
+};
+
+const mockFeatureFlagConfig = {
+  paymentSubTypes: {
+    CARD: {
+      VISA: true,
+      MASTERCARD: true,
+      AMEX: false,
+    },
+    CASH: {
+      CASH_ON_DELIVERY: true,
+    },
+  },
+};
+
+describe('retrievePaymentSubTypes', () => {
+  it('returns the correct payment subtypes for a given payment method', () => {
+    const paymentMethod = 'CARD';
+
+    const paymentSubTypes = retrievePaymentSubTypes(
+      paymentMethod,
+      mockEntitledPaymentMethods,
+      mockFeatureFlagConfig
+    );
+
+    // Assert that the function returns the expected result
+    expect(paymentSubTypes).toEqual(['VISA', 'MASTERCARD']);
+  });
+
+  it('returns an empty array when the payment method is not found or has no subtypes', () => {
+    // Test with a non-existent payment method
+    const nonExistentPaymentMethod = 'NON_EXISTENT_METHOD';
+    const resultForNonExistentMethod = retrievePaymentSubTypes(
+      nonExistentPaymentMethod,
+      mockEntitledPaymentMethods,
+      mockFeatureFlagConfig
+    );
+
+    // Assert that it returns an empty array for non-existent payment method
+    expect(resultForNonExistentMethod).toEqual([]);
+
+    // Test with a payment method that has no subtypes
+    const methodWithNoSubtypes = 'CASH';
+    const resultForMethodWithNoSubtypes = retrievePaymentSubTypes(
+      methodWithNoSubtypes,
+      mockEntitledPaymentMethods,
+      mockFeatureFlagConfig
+    );
+
+    // Assert that it returns an empty array for a method with no subtypes
+    expect(resultForMethodWithNoSubtypes).toEqual([]);
+  });
+});

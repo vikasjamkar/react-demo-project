@@ -1,0 +1,84 @@
+// Mocking the featureFlagConfig object
+const mockFeatureFlagConfig = {
+	paymentSubTypes: {
+	  CARD: {
+		VISA: true,
+		MASTER: true,
+	  },
+	  // Add more payment methods and subtypes as needed for your application
+	},
+  };
+  
+  // Mocking the entitledPaymentMethods object
+  const mockEntitledPaymentMethods = {
+	entitledPaymentTypes: [
+	  {
+		paymentMethod: 'CARD',
+		subPaymentMethods: ['VISA', 'MASTER'],
+	  },
+	  // Add more payment methods and subtypes as needed for your application
+	],
+  };
+  
+  // Import the function to be tested
+  import { retrievePaymentSubTypes } from './yourFile'; // Update with the correct path to your file
+  
+  // Mocking the featureFlagConfig and entitledPaymentMethods
+  jest.mock('./yourFeatureFlagConfigPath', () => ({ featureFlagConfig: mockFeatureFlagConfig }));
+  jest.mock('./yourEntitledPaymentMethodsPath', () => ({ entitledPaymentMethods: mockEntitledPaymentMethods }));
+  
+  describe('retrievePaymentSubTypes', () => {
+	it('returns an array of payment subtypes based on the provided payment method', () => {
+	  const paymentMethod = 'CARD';
+	  const result = retrievePaymentSubTypes(paymentMethod);
+	  expect(result).toEqual(['VISA', 'MASTER']);
+	});
+  
+	it('returns an empty array when the payment method is not provided', () => {
+	  const result = retrievePaymentSubTypes();
+	  expect(result).toEqual([]);
+	});
+  
+	it('returns an empty array when the payment method is not found in the entitledPaymentMethods', () => {
+	  const paymentMethod = 'INVALID_METHOD';
+	  const result = retrievePaymentSubTypes(paymentMethod);
+	  expect(result).toEqual([]);
+	});
+  
+	// Add more test cases to cover different scenarios and edge cases
+  });
+  
+
+
+
+
+  //program
+
+
+  
+  // const retrievePaymentSubTypes = (paymentMethod) => {
+  //   const paymentSubTypes = [];
+  //   if (paymentMethod) {
+  //     const paymentMethods =
+  //       entitledPaymentMethods?.entitledPaymentTypes?.filter(
+  //         (paymentKind) =>
+  //           paymentKind.paymentMethod === paymentMethod.toUpperCase()
+  //       );
+  //     if (paymentMethods?.length > 0) {
+  //       paymentMethods.forEach((pmtMethod) => {
+  //         if (featureFlagConfig.paymentSubTypes[pmtMethod.paymentMethod]) {
+  //           pmtMethod.subPaymentMethods.forEach((subType) => {
+  //             if (
+  //               featureFlagConfig.paymentSubTypes[pmtMethod.paymentMethod][
+  //                 subType
+  //               ]
+  //             ) {
+  //               paymentSubTypes.push(subType);
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   }
+  //   return paymentSubTypes;
+  // };
