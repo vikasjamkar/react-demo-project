@@ -6,8 +6,8 @@ import image from "../Public/images/Sign.avif";
 import "./LoginPage.css";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("kminchelle");
-  const [password, setPassword] = useState("0lelplR");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
